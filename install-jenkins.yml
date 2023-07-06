@@ -1,0 +1,69 @@
+---
+- name: Install Jenkins
+  hosts: localhost
+  become: true
+  remote_user: ec2-user
+  become_user: root
+  gather_facts: true
+
+  tasks:
+    - name: Check Linux distribution family
+      debug:
+        msg: "Linux distribution family is {{ ansible_distribution }}"
+
+    - name: Update package cache and upgrade packages (apt)
+      apt:
+        update_cache: yes
+        upgrade: dist
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+      tags: [packages]
+
+    - name: Update package cache and upgrade packages (yum)
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+      tags: [packages]
+
+    - name: Download LTS Jenkins
+      get_url:
+          url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+          dest: /etc/yum.repos.d/jenkins.repo
+
+    - name: Import jenkins key from url
+      ansible.builtin.rpm_key:
+          state: present
+          key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+    - name: Install Jenkins
+      become: true
+      yum:
+        name: jenkins
+        state: latest
+        #command: yum install jenkins -y # Replace with the appropriate installation command for your distribution
+      #when: ansible_os_family == "Debian"
+      tags: [jenkins]
+
+    - name: daemon-reload to pick up config changes
+      ansible.builtin.systemd:
+          daemon_reload: yes
+
+    - name: Start jenkins
+      become: true
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+      #when: ansible_os_family == "Debian"
+      tags: [jenkins]
+
+    - name: install the latest version of Docker
+      yum:
+        name: docker
+        state: latest
+        
+    - name: Start & Enable docker
+      systemd:
+          name: docker
+          state: started
+          enabled: true

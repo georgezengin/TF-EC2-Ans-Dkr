@@ -1,0 +1,28 @@
+# Compiled files
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+
+# logs
+*.log
+
+# Directories
+.terraform/
+.vagrant/
+modules/ansible/*
+
+# SSH Keys
+*.pem
+*.pub
+
+# Backup files
+*.bak
+
+# Ignored Terraform files
+*gitignore*.tf
+
+# Ignore Mac .DS_Store files
+.DS_Store
+
+# Ignored vscode files
+.vscode/
