@@ -30,3 +30,5 @@ tf-vpc-ec2-plan
 # Ignored vscode files
 .vscode/
 
+.$architecture-diagram.drawio.bkp
+architecture-diagram.drawio
