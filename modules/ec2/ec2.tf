@@ -125,7 +125,7 @@ resource "aws_instance" "jenkins_server" {
   security_groups             = [aws_security_group.jenkins_security_group.id]
   associate_public_ip_address = true
   create_iam_instance_profile = false
-  iam_instance_profile        = "ec2_sns_publish_profile"
+  #iam_instance_profile        = "ec2_sns_publish_profile"
     #user_data                   =  "${file("./ansible-install.sh")}"
   
   connection {
