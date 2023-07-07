@@ -21,6 +21,7 @@ modules/ansible/*
 # Ignored Terraform files
 *gitignore*.tf
 *plan
+tf-vpc-ec2-plan
 .terraform*hcl
 
 # Ignore Mac .DS_Store files
@@ -28,3 +29,4 @@ modules/ansible/*
 
 # Ignored vscode files
 .vscode/
+

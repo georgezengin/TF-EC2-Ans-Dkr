@@ -117,17 +117,15 @@ resource "aws_key_pair" "generated" {
 
 # Create EC2 Instance
 resource "aws_instance" "jenkins_server" {
-  ami                  = data.aws_ami.amazon_linux_2.id
-  instance_type        = var.v_instance_type
-  key_name             = aws_key_pair.generated.key_name
-#  subnet_id            = var.v_public_subnet_id #aws_subnet.subnet.id
-  subnet_id            = var.v_public_subnet_id[0] #count.index]
-  security_groups      = [aws_security_group.jenkins_security_group.id]
-  #iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.id
-  #user_data            = var.v_ec2_user_data
+  ami                         = data.aws_ami.amazon_linux_2.id
+  instance_type               = var.v_instance_type
+  key_name                    = aws_key_pair.generated.key_name
+#  subnet_id                   = var.v_public_subnet_id #aws_subnet.subnet.id
+  subnet_id                   = var.v_public_subnet_id[0] #count.index]
+  security_groups             = [aws_security_group.jenkins_security_group.id]
   associate_public_ip_address = true
-  #user_data            =  "${file("./ansible-install.sh")}"
-  iam_instance_profile = aws_iam_instance_profile.ec2_sns_publish_profile.id
+  iam_instance_profile        = "ec2_sns_publish_profile"
+    #user_data                   =  "${file("./ansible-install.sh")}"
   
   connection {
     user        = "ec2-user"
@@ -189,11 +187,13 @@ resource "aws_instance" "jenkins_server" {
   }
   
   tags = {
-    Name = "${var.v_environment}-jenkins-server"
+    Name        = "${var.v_environment}-jenkins-server"
     Environment = "${var.v_environment}"
   }
 
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [ aws_iam_instance_profile.ec2_sns_publish_profile ]
 }

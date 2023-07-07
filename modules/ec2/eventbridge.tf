@@ -10,10 +10,6 @@ resource "aws_iam_role" "scheduler_role" {
       }
     ]
   })
-  tags = {
-    Name = "${var.v_environment}-scheduler-role"
-    Environment = "${var.v_environment}"
-  }
 }
 
 resource "aws_iam_policy" "StartStopEc2" {
@@ -23,16 +19,28 @@ resource "aws_iam_policy" "StartStopEc2" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
+          "Effect": "Allow",
+          "Action": [
+              "logs:CreateLogGroup",
+              "logs:CreateLogStream",
+              "logs:PutLogEvents",
+              "events:*"
+          ],
+          "Resource": "arn:aws:logs:*:*:*"
+      },
+      {
         "Sid" : "StartStopEc2",
         "Effect" : "Allow",
         "Action": [
             "ec2:RevokeSecurityGroupIngress",
-            "ec2:AuthorizeSecurityGroupEgress",
-            "ec2:AuthorizeSecurityGroupIngress",
             "ec2:RevokeSecurityGroupEgress",
+            "ec2:AuthorizeSecurityGroupIngress",
+            "ec2:AuthorizeSecurityGroupEgress",
             "ec2:DescribeInstances",
-            "ec2:StartInstances",
-            "ec2:StopInstances",
+            "ec2:DescribeInstanceStatus",
+            "ec2:DescribeInstanceEventNotificationAttributes",
+            "ec2:Start*",
+            "ec2:Stop*",
             "ec2:RebootInstances"
         ],
         "Resource" : "*"
@@ -96,8 +104,44 @@ resource "aws_scheduler_schedule" "stop_ec2_sched" {
 
 # SNS notification when instance starts or stops
 
+resource "aws_iam_role" "ec2_sns_publish_role" {
+  name               = "ec2_sns_publish_role"
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_policy" "sns_publish_policy" {
+  name        = "${var.v_environment}-sns_publish_policy"
+  description = "Allows publishing to the EC2 state change topic"
+  policy      = data.aws_iam_policy_document.sns_publish_policy.json
+  depends_on = [ data.aws_iam_policy_document.sns_publish_policy ]
+}
+
+resource "aws_iam_instance_profile" "ec2_sns_publish_profile" {
+  name = "${var.v_environment}-ec2_sns_publish_profile"
+  role = aws_iam_role.ec2_sns_publish_role.id
+  depends_on = [ aws_iam_policy.sns_publish_policy ]
+}
+
+resource "aws_iam_role_policy_attachment" "sns_publish_policy_attachment" {
+  role       = aws_iam_role.ec2_sns_publish_role.name
+  policy_arn = aws_iam_policy.sns_publish_policy.arn
+}
+
 resource "aws_sns_topic" "ec2_state_change_topic" {
-  name = "ec2_state_change_topic"
+  name = "${var.v_environment}-ec2_state_change_topic"
 }
 
 resource "aws_sns_topic_subscription" "ec2_state_change_subscription" {
@@ -115,19 +159,8 @@ data "aws_iam_policy_document" "sns_publish_policy" {
   }
 }
 
-resource "aws_iam_policy" "sns_publish_policy" {
-  name        = "sns_publish_policy"
-  description = "Allows publishing to the EC2 state change topic"
-  policy      = data.aws_iam_policy_document.sns_publish_policy.json
-}
-
-resource "aws_iam_instance_profile" "ec2_sns_publish_profile" {
-  name = "ec2_sns_publish_profile"
-  role = aws_iam_policy.sns_publish_policy.name
-}
-
 resource "aws_cloudwatch_event_rule" "ec2_state_change_rule" {
-  name        = "ec2_state_change_rule"
+  name        = "${var.v_environment}-ec2_state_change_rule"
   description = "Trigger SNS alarm on EC2 instance state change"
   event_pattern = <<PATTERN
 {

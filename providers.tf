@@ -18,6 +18,16 @@ terraform {
 #      version = "~> 0.0.1"
 #      source  = "terraform-ansible.com/ansibleprovider/ansible"
 #    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~>3.0.0"
+    }
+
+    # random-uuid = {
+    #   source  = "hashicorp/random-uuid"
+    #   version = "~>3.0.0"
+    # }
+
   }
 
   required_version = "~>1.5.2"
@@ -33,3 +43,7 @@ provider "aws" {
   #secret_key = var.v_aws_secret_key
   #region     = var.v_aws_region
 }
+
+# provider "random" {
+  
+# }
