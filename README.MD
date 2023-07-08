@@ -3,8 +3,13 @@
 
 Deploy a simple Public EC2 instance using Terraform.
 On creation, the instance will have automatically installed Git, Java, Python, Docker, Ansible & Jenkins using a combination of a bash script and ansible.
-A hidden folder will be created inside the instance called ".install-jenkins".
-The folder will contain the bash script file (install-setup.sh) and a log file with the same name which will store the result of the installation execution (for debugging purposes).
+
+During deployment, a hidden folder will be created in the instance called '.install-jenkins'.
+The folder will contain the bash script file *'install-setup.sh'* and a log file with the same name which will store the result of the installation execution (for debugging purposes).
+
+## Architecture diagram of this solution
+
+![Screenshot](images/architecture-diagram.jpg)
 
 ## Instructions:
 - Clone this project in a folder of your choice in a Linux session.
@@ -29,8 +34,9 @@ The folder will contain the bash script file (install-setup.sh) and a log file w
   terraform plan
   terraform apply
   ```
-When finished, the terraform script will produce a list of outputs which includes the IP of the created instance and a command line to be used for ssh connection to the instance. 
-Just copy this command and execute it in your shell to connect to it.
+
+When finished, the 'terraform apply' command will produce a list of outputs which includes the IP of the created instance and a command line to be used for ssh connection to the instance. Just copy this command and execute it in your shell to connect to it.
+(see outputs examples at bottom of this file)
 
 ## Usage of the deployed architecture
 
@@ -40,24 +46,17 @@ Use your terminal to SSH into the EC2 public IP using the generated PEM file in 
 Use the command line provided as output of the terraform script for SSH connection. 
 ![Screenshot](images/ssh-string.png)
 
-
 + Jenkins
 
-Connect to the EC2 Instance Jenkins installation to the EC2 public IP at port 8080 using HTTP in your browser.
+Connect to the Jenkins GUI on the EC2 public IP at port 8080 using HTTP in your browser.
+Ctrl-click at the link in the outputs will take you straight to it.
+![Screenshot](images/jenkins-GUI.png)
 
 ## Pre-requisites
 
 + AWS account with the relevant permissions to perform the creation functions (admin-like preferred)
 + AWSCLI installed (Amazon Command Line interface)
 + Terraform locally installed
-
-## Architecture diagram
-
-![Screenshot](images/architecture-diagram.jpg)
-
-## Inputs
-
-No inputs.
 
 ## Outputs
 
