@@ -22,12 +22,6 @@ terraform {
       source  = "hashicorp/random"
       version = "~>3.0.0"
     }
-
-    # random-uuid = {
-    #   source  = "hashicorp/random-uuid"
-    #   version = "~>3.0.0"
-    # }
-
   }
 
   required_version = "~>1.5.2"
@@ -37,13 +31,4 @@ provider "aws" {
   access_key    = local.l_aws_access_key
   secret_key    = local.l_aws_secret_key
   region        = local.l_aws_region
-
-  # get AWS access keys from tfvars file or from env vars
-  #access_key = var.v_aws_access_key
-  #secret_key = var.v_aws_secret_key
-  #region     = var.v_aws_region
 }
-
-# provider "random" {
-  
-# }

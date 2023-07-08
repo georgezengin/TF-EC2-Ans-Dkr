@@ -15,10 +15,10 @@ output "o_user_local_public_IP" {
   value       = module.network.o_user_local_public_IP
 }
 
-output "o_userip" {
-  description = "user IP address"
-  value = module.network.o_userip
-}
+# output "o_userip" {
+#   description = "user IP address"
+#   value = module.network.o_userip
+# }
 
 output "o_igw_id" {
   description = "IGW id"
@@ -54,3 +54,9 @@ output "o_ec2_remote_access" {
   description = "EC2 Remote Access"
   value       = module.ec2.o_ec2_remote_access
 }
+
+output "o_jenkins_GUI_access" {
+  description = "Jenkins GUI Remote Access"
+  value       = module.ec2.o_jenkins_GUI_access
+}
+

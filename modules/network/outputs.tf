@@ -21,8 +21,8 @@ output "o_igw_id" {
   value = "${aws_internet_gateway.internet_gateway.id}"
 }
 
-output "o_userip" {
-  description = "user IP address"
-  value = "${data.external.useripaddr}"
-}
+# output "o_userip" {
+#   description = "user IP address"
+#   value = "${data.external.useripaddr}"
+# }
 

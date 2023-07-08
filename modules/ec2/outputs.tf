@@ -7,6 +7,11 @@ output "o_ec2_remote_access" {
   value       = "ssh -i ${local_file.private_key_pem.filename} ec2-user@${aws_instance.jenkins_server.public_ip}"
 }
 
+output "o_jenkins_GUI_access" {
+  description = "Jenkins GUI Remote Access"
+  value       = "http://${aws_instance.jenkins_server.public_ip}:8080"
+}
+
 output "o_instance_id" {
   description = "EC2 instance ID"
   value       = aws_instance.jenkins_server.id

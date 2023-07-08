@@ -1,7 +1,7 @@
 /* This Terraform deployment creates the following resources:
-   VPC, Subnet, Internet Gateway, Default Route, 
-   Security Group, SSH Key, and EC2 with userdata script installing Jenkins */
-
+   VPC, Subnet, Internet Gateway, Route table, Security Group, 
+   SSH Key and EC2 with Git, Java, Python, Docker, Ansible & Jenkins installed 
+*/
 
 module "network" {
   source = "./modules/network"
@@ -22,7 +22,4 @@ module "ec2" {
   v_public_subnet_id  = module.network.o_subnet_id
   v_ssh_key           = var.v_ssh_key
   v_email_addr_sns    = var.v_email_addr_sns
-
 }
-
-

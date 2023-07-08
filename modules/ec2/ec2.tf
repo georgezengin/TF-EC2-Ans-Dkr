@@ -6,13 +6,13 @@ data "external" "useripaddr" {
   program = ["bash", "-c", "curl -s 'https://ipinfo.io/json'"]
 }
 
-# Security Group
+# Security Group allowed incoming ports
 variable "ingressrules" {
   type    = list(number)
-  default = [8080, 22]
+  default = [80, 443] #[8080, 22, 80]
 }
 
-resource "aws_security_group" "web_traffic" {
+resource "aws_security_group" "http_web_traffic" {
   name        = "Allow web traffic"
   description = "inbound ports for ssh and standard http and everything outbound"
   dynamic "ingress" {
@@ -22,30 +22,30 @@ resource "aws_security_group" "web_traffic" {
       from_port   = port.value
       to_port     = port.value
       protocol    = "TCP"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = [ var.v_alltraffic_cidr ]
     }
   }
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [ var.v_alltraffic_cidr ]
   }
   tags = {
-    Name = "${var.v_environment}-jenkins-security-group"
+    Name        = "${var.v_environment}-jenkins-security-group"
     Environment = "${var.v_environment}"
   }
 }
 
-# Create EC2 Security Group and Security Rules
+# Create EC2 Security Group and Security Rules (specific for SSH & 8080)
 resource "aws_security_group" "jenkins_security_group" {
   name        = "${var.v_environment}-jenkins-security-group"
-  description = "Apply to Jenkins EC2 instance"
+  description = "SSH/8080 to Jenkins EC2 instance"
   vpc_id      = var.v_vpc_id
   
 
   ingress {
-    description = "Allow SSH from user Public IP"
+    description = "SSH/universal"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -53,7 +53,7 @@ resource "aws_security_group" "jenkins_security_group" {
   }
 
   ingress {
-    description = "Allow access to Instance from user IP"
+    description = "Jenkins GUI - use public IP or public DNS to port 8080 to access"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
@@ -61,7 +61,7 @@ resource "aws_security_group" "jenkins_security_group" {
   }
 
   egress {
-    description = "Allow All Outbound"
+    description = "Allow All traffic outbound"
     protocol    = -1
     from_port   = 0
     to_port     = 0
@@ -69,13 +69,13 @@ resource "aws_security_group" "jenkins_security_group" {
   }
 
   tags = {
-    Name = "${var.v_environment}-jenkins-security-group"
+    Name        = "${var.v_environment}-jenkins-security-group"
     Environment = "${var.v_environment}"
   }
 
   lifecycle {
     #ignore_changes = [ingress]
-    create_before_destroy = true
+    #create_before_destroy = true
   }
 }
 
@@ -122,11 +122,10 @@ resource "aws_instance" "jenkins_server" {
   key_name                    = aws_key_pair.generated.key_name
 #  subnet_id                   = var.v_public_subnet_id #aws_subnet.subnet.id
   subnet_id                   = var.v_public_subnet_id[0] #count.index]
-  security_groups             = [aws_security_group.jenkins_security_group.id]
+  security_groups             = [aws_security_group.jenkins_security_group.id ] #, aws_security_group.http_web_traffic.id ]
   associate_public_ip_address = true
-  create_iam_instance_profile = false
-  #iam_instance_profile        = "ec2_sns_publish_profile"
-    #user_data                   =  "${file("./ansible-install.sh")}"
+  # iam_instance_profile        = "ec2_sns_publish_profile"
+  # user_data                   =  "${file("./ansible-install.sh")}"
   
   connection {
     user        = "ec2-user"
@@ -137,8 +136,8 @@ resource "aws_instance" "jenkins_server" {
   }
 
   #provisioner "local-exec" {
-    #command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i ${self.public_ip}, --private-key ${tls_private_key.generated.private_key.pem} -e 'pub_key=${tls_private_key.generated.private_key.pem}' install-jenkins-java.yml"
-  #}#ansible-playbook install-jenkins.yml -i inventory.txt
+  #  command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i ${self.public_ip}, --private-key ${tls_private_key.generated.private_key.pem} -e 'pub_key=${tls_private_key.generated.private_key.pem}' install-jenkins-java.yml"
+  #}
 
   # provisioner "local-exec" {
   #  command = "ansible-playbook -i ${aws_instance.jenkins_server.public_ip} ${path.module}/install-jenkins.yml"
@@ -178,6 +177,7 @@ resource "aws_instance" "jenkins_server" {
       "mv * .install-jenkins",
       "/home/ec2-user/.install-jenkins/instance-setup.sh 2>&1 | tee /home/ec2-user/.install-jenkins/instance-setup.log"  # Redirect script output to a log file
     ]
+
     connection {
       user        = "ec2-user"
       private_key = tls_private_key.generated.private_key_pem
@@ -193,8 +193,8 @@ resource "aws_instance" "jenkins_server" {
   }
 
   lifecycle {
-    create_before_destroy = true
+    #create_before_destroy = true
   }
 
-  depends_on = [ aws_iam_instance_profile.ec2_sns_publish_profile ]
+  #depends_on = [ aws_iam_instance_profile.ec2_sns_publish_profile ]
 }

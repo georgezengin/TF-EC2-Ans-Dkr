@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${var.v_environment}-vpc"
+    Name        = "${var.v_environment}-vpc"
     Environment = "${var.v_environment}"
   }
 }
@@ -24,14 +24,12 @@ data "aws_availability_zones" "available" {}
 resource "aws_subnet" "subnet" {
   count                   = length(var.v_subnet_cidr)
   vpc_id                  = aws_vpc.vpc.id
-  #cidr_block              = var.v_subnet_cidr
   cidr_block              = "${var.v_subnet_cidr[count.index]}"
-  #availability_zone       = var.v_avail_zones[0]  # Specify the desired availability zone from the list
   availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.v_environment}-public-subnet-${count.index + 1}"
+    Name        = "${var.v_environment}-public-subnet-${count.index + 1}"
     Environment = "${var.v_environment}"
   }
 }
@@ -40,7 +38,7 @@ resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.v_environment}-igw"
+    Name        = "${var.v_environment}-igw"
     Environment = "${var.v_environment}"
   }
 }
@@ -55,7 +53,7 @@ resource "aws_default_route_table" "default_route" {
   }
 
   tags = {
-    Name = "${var.v_environment}-default-route-table"
+    Name        = "${var.v_environment}-default-route-table"
     Environment = "${var.v_environment}"
   }
 }

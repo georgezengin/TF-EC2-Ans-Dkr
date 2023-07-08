@@ -32,3 +32,4 @@ tf-vpc-ec2-plan
 
 .$architecture-diagram.drawio.bkp
 architecture-diagram.drawio
+instance-setup copy.sh

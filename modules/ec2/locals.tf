@@ -11,8 +11,8 @@ locals {
 
   http_security_group_id = ""
 
-  start_ec2_cron = "cron(0 07 * * ? *)"
-  stop_ec2_cron  = "cron(0 19 * * ? *)"
-  iam_role_prefix = random_uuid.pol_prefix
+  start_ec2_cron  = "cron(0 07 * * ? *)"
+  stop_ec2_cron   = "cron(0 19 * * ? *)"
+  #iam_role_prefix = random_uuid.pol_prefix
 }
 
