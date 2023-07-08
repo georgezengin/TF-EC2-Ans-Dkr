@@ -60,11 +60,18 @@ Connect to the EC2 Instance Jenkins installation to the EC2 public IP at port 80
 No inputs.
 
 ## Outputs
+
++ Sample screenshot after terraform apply ends
 ![Screenshot](images/tf-apply-complete.png)
 
++ Sample screenshot of ssh connection string in output to copy and connect using generated pem file
 ![Screenshot](images/ssh-session-open.png)
+![Screenshot](images/ssh-session.png)
+![Screenshot](images/ssh-string.png)
 
++ Sample screenshot of link to jenkins GUI generated in output
 ![Screenshot](images/jenkins-open.png)
+
 
 
 
