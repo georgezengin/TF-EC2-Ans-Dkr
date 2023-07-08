@@ -67,6 +67,11 @@ No inputs.
 + Sample screenshot of ssh connection string in output to copy and connect using generated pem file
 ![Screenshot](images/ssh-session-open.png)
 ![Screenshot](images/ssh-session.png)
++ Session opened using connection string.
+  
+  A hidden directory [.install-jenkins] is created by the installation script, inside of it you can find the ansible yml file, the 
+  installation script and the log file at the time of deployment.
+
 ![Screenshot](images/ssh-string.png)
 
 + Sample screenshot of link to jenkins GUI generated in output
