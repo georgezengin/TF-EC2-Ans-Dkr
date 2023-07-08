@@ -2,9 +2,9 @@
 ## Project Introduction:
 
 Deploy a simple Public EC2 instance using Terraform.
-On creation, the instance will have automatically installed Git, Java, Python, Docker, Ansible & Jenkins using a combination of a bash script and ansible.
+On creation, the instance will have automatically installed *Git, Java, Python, Docker, Ansible & Jenkins* using a combination of a bash script and ansible.
 
-During deployment, a hidden folder will be created in the instance called '.install-jenkins'.
+During deployment, a hidden folder will be created in the instance called *'.install-jenkins'*.
 The folder will contain the bash script file *'install-setup.sh'* and a log file with the same name which will store the result of the installation execution (for debugging purposes).
 
 ## Architecture diagram of this solution
@@ -14,15 +14,15 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
 ## Instructions:
 - Clone this project in a folder of your choice in a Linux session.
 
-- Customize the project specific parameters in file "terraform.tfvars" (defaults to eu-central-1 region and eu-central-1a zone)
+- Customize the project specific parameters in file *'terraform.tfvars'* (defaults to *eu-central-1* region and *eu-central-1a* zone).
   Use this file to customize the project name, the region, availability_zones, VPC CIDR, subnet CIDRs, ssh key file name, email address.
 
 - Environment Variables (optional)
-  This is needed if you havent configured a user in AWSCLI with the 'aws configure' command.
+  This is needed if you havent configured a user in AWSCLI with the *'aws configure'* command.
   - AWS_ACCESS_KEY_ID    : your user's Access Key ID
   - AWS_SECRET_ACCESS_KEY: your user's Secret access key.
 
-  Alternatively, the AWS credentials can be added to the "terraform.tfvars" file, if preferred.
+  Alternatively, the AWS credentials can be added to the *'terraform.tfvars'* file, if preferred.
 
 - On a terminal session, issue the following commands in the project's directory:
   ```shell
@@ -35,8 +35,8 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
   terraform apply
   ```
 
-When finished, the 'terraform apply' command will produce a list of outputs which includes the IP of the created instance and a command line to be used for ssh connection to the instance. Just copy this command and execute it in your shell to connect to it.
-(see outputs examples at bottom of this file)
+When finished, the *'terraform apply'* command will produce a list of outputs which includes the IP of the created instance and a command line to be used for ssh connection to the instance. Just copy this command and execute it in your shell to connect to it.
+(see screen outputs at bottom of this file)
 
 ## Usage of the deployed architecture
 
@@ -75,7 +75,8 @@ Ctrl-click at the link in the outputs will take you straight to it.
   installation script and the log file at the time of deployment.
 ![Screenshot](images/ssh-session.png)
 
-
+Enjoy!
+George
 
 
 
