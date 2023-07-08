@@ -10,7 +10,7 @@
 .git/
 .terraform/
 .vagrant/
-modules/ansible/*
+modules/.ansible/*
 
 # SSH Keys
 *.pem
