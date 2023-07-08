@@ -167,9 +167,10 @@ resource "aws_cloudwatch_event_rule" "ec2_state_change_rule" {
   "source": ["aws.ec2"],
   "detail-type": ["EC2 Instance State-change Notification"],
   "detail": {
-    "state": ["running", "stopped"]
+    "state": ["stopped", "stopping", "shutting-down", "terminated", "running", "pending"],
+    "instance-id": ["${aws_instance.jenkins_server.id}"]
   }
-}
+}  
 PATTERN
 }
 
