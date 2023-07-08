@@ -7,6 +7,7 @@
 *.log
 
 # Directories
+.git/
 .terraform/
 .vagrant/
 modules/ansible/*
