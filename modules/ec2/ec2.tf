@@ -123,8 +123,8 @@ resource "aws_instance" "jenkins_server" {
   subnet_id                   = var.v_public_subnet_id[0] #count.index]
   security_groups             = [aws_security_group.jenkins_security_group.id] #,  aws_security_group.http_web_traffic.id ]
   associate_public_ip_address = true
-  
-  #iam_instance_profile        = aws_iam_instance_profile.ec2_sns_publish_profile.arn # "ec2_sns_publish_profile"
+
+  # iam_instance_profile        = aws_iam_instance_profile.ec2_sns_publish_profile.arn # "ec2_sns_publish_profile"
   # user_data                   =  "${file("./ansible-install.sh")}"
   
   connection {
@@ -135,6 +135,7 @@ resource "aws_instance" "jenkins_server" {
     password    = ""
   }
 
+  #For future reference
   #provisioner "local-exec" {
   #  command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i ${self.public_ip}, --private-key ${tls_private_key.generated.private_key.pem} -e 'pub_key=${tls_private_key.generated.private_key.pem}' install-jenkins-java.yml"
   #}
