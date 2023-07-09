@@ -68,6 +68,24 @@ variable "v_ssh_path" {
 
 variable "v_email_addr_sns" {}
 
+variable "start_ec2_cron"  {
+  description = "Cron mask for instance auto start time"
+  type        = string
+  default     = "cron(0 07 * * ? *)"
+}
+
+variable "stop_ec2_cron"  {
+  description = "Cron mask for instance auto stop time"
+  type        = string
+  default     = "cron(0 19 * * ? *)"
+}
+
+variable "ec2_timezone"  {
+  description = "Time zone for schedules"
+  type        = string
+  default     = "Asia/Tel_Aviv" #from IANA Time Zone Database.
+}
+
 # variable "v_ec2_user_data" {
 #   description = "User data shell script for Jenkins EC2"
 #   type        = string
