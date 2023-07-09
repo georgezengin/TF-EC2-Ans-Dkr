@@ -107,5 +107,4 @@
 
     ![Screenshot](images/mail-notification.jpg)
 
-Enjoy!
-George
+ 
