@@ -1,5 +1,5 @@
 
-## Project Introduction:
+### Project Introduction:
 
 Deploy a simple Public EC2 instance using Terraform.
 On creation, the instance will have automatically installed *Git, Java, Python, Docker, Ansible & Jenkins* using a combination of a bash script and ansible.
