@@ -67,18 +67,18 @@ resource "aws_cloudwatch_event_target" "sns_target" {
 
   input_transformer {
     input_paths = {
-      instance  = "$.detail.instance",
-      status    = "$.detail.status",
-      arn       = "$.resources[0]",
-      detail    = "$.detail-type",
-      acct      = "$.account",
-      when      = "$.time",
-      region    = "$.region",
+      instance_id = "$.detail.instance-id",
+      state       = "$.detail.state",
+      arn         = "$.resources[0]",
+      detail      = "$.detail-type",
+      acct        = "$.account",
+      when        = "$.time",
+      region      = "$.region"
     }
     input_template = <<EOF
     {
-      "instance_id"     : <instance>,
-      "instance_status" : <status>,
+      "instance_id"     : <instance_id>,
+      "instance_state"  : <state>,
       "arn"             : <arn>,
       "detail"          : <detail>,
       "acct"            : <acct>,
