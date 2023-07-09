@@ -16,19 +16,17 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
 - VPC (CIDR configurable in *'terraform.tfvars'* file)
 - Public Subnets (according to the number of CIDRs configured in *'terraform.tfvars'* file)
 - Security Group with SSH and 8080 (for Jenkins GUI) (for any IP) (TODO: for your current public IP as the only allowed ingress access)
+- Internet Gateway
+- Route table
 - Private key file (with extension PEM), to be used for SSH connection to the Instance
-- Amazon using latest AMI-based EC2 instance
-
-## How to use this repo
-1. Clone with git: git clone https://github.com/rcsfc/Terraform-Instance-VPC-S3-Bucket-Example.git
-2. Run "terraform init"
-3. Run "terraform apply" and type "yes" at the prompt
-
-# Destroying the deployment
-1. To wipe the slate clean and destroy all of the resources you deployed run the following: "terraform destroy" and type "yes" at the prompt
+- Amazon-Linux EC2 instance with public IP/public DNS using latest AMI-based Amazon Linux image
+- EventBridge schedules that start & stop the instance automatically at 07:00 and 19:00.
+- EventBridge rule that triggers an SNS topic on EC2 instance change
+- SNS topic that notifies an email address when the instances are started or stopped (automatically or manually)
 
 ## Instructions:
 - Clone this project in a folder of your choice in a Linux session.
+  *git clone https://github.com/georgezengin/TF-EC2-Ans-Dkr.git*
 
 - Customize the project specific parameters in file *'terraform.tfvars'* (defaults to *eu-central-1* region and *eu-central-1a* zone).
   Use this file to customize the project name, the region, availability_zones, VPC CIDR, subnet CIDRs, ssh key file name, email address.
@@ -48,11 +46,16 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
   terraform init
   terraform validate
   terraform plan
-  terraform apply
+  terraform apply  # (enter yes when prompted to apply changes)
   ```
 
 When finished, the *'terraform apply'* command will produce a list of outputs which includes the IP of the created instance and a command line to be used for ssh connection to the instance. Just copy this command and execute it in your shell to connect to it.
 (see screen outputs at bottom of this file)
+
+# When finished - don't forget to destroying the deployed resources
+```shell
+terraform destroy
+```
 
 ## Usage of the deployed architecture
 
@@ -93,13 +96,3 @@ Ctrl-click at the link in the outputs will take you straight to it.
 
 Enjoy!
 George
-
-
-
-# Terraform Instance-VPC-S3-Bucket Example
-This repo is used to show an example of how you might deploy an Ubuntu instance with a simple VPC, an S3 bucket pre-configured with a user and policy in IAM, and the auth key and secret uploaded as an encrypted text file directly to the S3 bucket when the deployment is complete. The idea behind this repo was to provide the user with a usable environment that is a bit more feature complete and secure than the typical barebones deployment of "just getting it to work". I also wanted to whitelist the user's IP address by default in SSH to avoid exposing the instance to the entire internet.
-
-
-# ToDo
-- Clean up code and introduce more variables
-- Convert to a module

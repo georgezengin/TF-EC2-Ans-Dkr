@@ -197,6 +197,4 @@ resource "aws_instance" "jenkins_server" {
     ignore_changes = [ security_groups ]
     #create_before_destroy = true
   }
-
-  #depends_on = [ aws_iam_instance_profile.ec2_sns_publish_profile ]
 }
