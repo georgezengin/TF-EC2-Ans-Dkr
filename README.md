@@ -26,8 +26,10 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
 
 ## Instructions:
 - Clone this project in a folder of your choice in a Linux session.
-  *git clone https://github.com/georgezengin/TF-EC2-Ans-Dkr.git*
-
+  ```shell
+  git clone https://github.com/georgezengin/TF-EC2-Ans-Dkr.git
+  ```
+  
 - Customize the project specific parameters in file *'terraform.tfvars'* (defaults to *eu-central-1* region and *eu-central-1a* zone).
   Use this file to customize the project name, the region, availability_zones, VPC CIDR, subnet CIDRs, ssh key file name, email address.
 
@@ -35,24 +37,28 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
   This is needed if you havent configured a user in AWSCLI with the *'aws configure'* command.
   - AWS_ACCESS_KEY_ID    : your user's Access Key ID
   - AWS_SECRET_ACCESS_KEY: your user's Secret access key.
-
-  Alternatively, the AWS credentials can be added to the *'terraform.tfvars'* file, if preferred.
-
-- On a terminal session, issue the following commands in the project's directory:
   ```shell
   export AWS_ACCESS_KEY_ID=<your_access_key_id>
   export AWS_SECRET_ACCESS_KEY=<your_secret_key>
-  
+  ```
+  Alternatively, the AWS credentials can be added to the *'terraform.tfvars'* file, if preferred.
+
+- On a terminal session, issue the following commands in the project's directory:
+  ```shell  
   terraform init
   terraform validate
   terraform plan
   terraform apply  # (enter yes when prompted to apply changes)
   ```
 
-When finished, the *'terraform apply'* command will produce a list of outputs which includes the IP of the created instance and a command line to be used for ssh connection to the instance. Just copy this command and execute it in your shell to connect to it.
+On completion, the *'terraform apply'* command will produce a list of outputs among those the following:
+- Public IP of the created instance
+- CLI string to be used for ssh connection to the instance.
+  Just copy this command and execute it in your shell to connect to it.
 (see screen outputs at bottom of this file)
 
-# When finished - don't forget to destroying the deployed resources
+# When finished - don't forget to delete the deployed resources to avoid unnecessary charges
+For that purpose, run the following command on the command line of your deployment terminal (not the EC2 instance shell)
 ```shell
 terraform destroy
 ```
