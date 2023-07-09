@@ -85,14 +85,14 @@ Ctrl-click at the link in the outputs will take you straight to it.
 
 ## Outputs
 
-+ Sample screenshot after terraform apply ends
-![Screenshot](images/tf-apply-complete.png)
++ Sample screenshot after *terraform apply* ends
 
-+ Sample screenshot of ssh connection string in output to copy and connect using generated pem file
-![Screenshot](images/ssh-session-open.png)
+![Screenshot](images/finish-script.jpg)
 
-+ Sample screenshot of link to jenkins GUI generated in output
-![Screenshot](images/jenkins-open.png)
++ Sample screenshot of outputs generated
+
+  (includes ssh connection string and Jenkins GUI URL)
+![Screenshot](images/list-of-outputs)
 
 + Session opened using connection string.
   
