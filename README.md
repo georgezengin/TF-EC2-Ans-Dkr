@@ -92,13 +92,19 @@ Ctrl-click at the link in the outputs will take you straight to it.
 + Sample screenshot of outputs generated
 
   (includes ssh connection string and Jenkins GUI URL)
+
 ![Screenshot](images/list-of-outputs)
 
 + Session opened using connection string.
   
   A hidden directory [.install-jenkins] is created by the installation script, inside of it you can find the ansible yml file, the 
   installation script and the log file at the time of deployment.
+
 ![Screenshot](images/ssh-session.png)
+
++ Sample of Mail Notification on Instance Start/Stop
+
+![Screenshot](images/mail-notification)
 
 Enjoy!
 George
