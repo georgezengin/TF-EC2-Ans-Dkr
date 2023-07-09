@@ -4,7 +4,7 @@
 
 output "o_ec2_remote_access" {
   description = "EC2 Remote Access"
-  value       = "ssh -i ${local_file.private_key_pem.filename} ec2-user@${aws_instance.jenkins_server.public_ip}"
+  value       = [ "ssh -i ${local_file.private_key_pem.filename} ec2-user@${aws_instance.jenkins_server.public_ip}" ]
 }
 
 output "o_jenkins_GUI_access" {

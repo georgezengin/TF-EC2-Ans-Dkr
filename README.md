@@ -11,6 +11,22 @@ The folder will contain the bash script file *'install-setup.sh'* and a log file
 
 ![Screenshot](images/architecture-diagram.jpg)
 
+# Deploys the following resources in AWS account:
+
+- VPC (CIDR configurable in *'terraform.tfvars'* file)
+- Public Subnets (according to the number of CIDRs configured in *'terraform.tfvars'* file)
+- Security Group with SSH and 8080 (for Jenkins GUI) (for any IP) (TODO: for your current public IP as the only allowed ingress access)
+- Private key file (with extension PEM), to be used for SSH connection to the Instance
+- Amazon using latest AMI-based EC2 instance
+
+## How to use this repo
+1. Clone with git: git clone https://github.com/rcsfc/Terraform-Instance-VPC-S3-Bucket-Example.git
+2. Run "terraform init"
+3. Run "terraform apply" and type "yes" at the prompt
+
+# Destroying the deployment
+1. To wipe the slate clean and destroy all of the resources you deployed run the following: "terraform destroy" and type "yes" at the prompt
+
 ## Instructions:
 - Clone this project in a folder of your choice in a Linux session.
 
@@ -80,3 +96,10 @@ George
 
 
 
+# Terraform Instance-VPC-S3-Bucket Example
+This repo is used to show an example of how you might deploy an Ubuntu instance with a simple VPC, an S3 bucket pre-configured with a user and policy in IAM, and the auth key and secret uploaded as an encrypted text file directly to the S3 bucket when the deployment is complete. The idea behind this repo was to provide the user with a usable environment that is a bit more feature complete and secure than the typical barebones deployment of "just getting it to work". I also wanted to whitelist the user's IP address by default in SSH to avoid exposing the instance to the entire internet.
+
+
+# ToDo
+- Clean up code and introduce more variables
+- Convert to a module

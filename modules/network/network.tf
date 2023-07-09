@@ -7,6 +7,7 @@
 resource "aws_vpc" "vpc" {
   cidr_block = var.v_vpc_cidr
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   tags = {
     Name        = "${var.v_environment}-vpc"
@@ -59,7 +60,7 @@ resource "aws_default_route_table" "default_route" {
 }
 
 resource "aws_route_table_association" "route_table_assoc" {
-  count          = 1
+  count          = length(var.v_subnet_cidr)
   subnet_id      = aws_subnet.subnet.*.id[count.index]
   route_table_id = aws_default_route_table.default_route.id
 }

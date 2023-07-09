@@ -20,8 +20,12 @@ v_vpc_cidr     = "10.10.0.0/16"
 # Specify CIDR blocks for subnets created in different availability zones
 v_subnet_cidr  = ["10.10.1.0/24"]
 
-# Specify the name of the SSH PEM file to generate in order to connect to the EC2 Instance (no extension needed)
+# Specify if SSH access is limited to initiator's IP or it is allowed for any IP
+v_public_access_ssh = "yes"
+
+# Specify the name and path of the SSH PEM file to generate in order to connect to the EC2 Instance (no extension needed)
 v_ssh_key = "tf-ec2-jnk-ans"
+v_ssh_path = "" # can be made to point to ~/.ssh
 
 # Specify email address for SNS to notify on EC2 change of state (start/stop)
 v_email_addr_sns = "test.AWS.IITC.course@gmail.com"

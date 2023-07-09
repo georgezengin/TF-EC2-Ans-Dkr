@@ -1,5 +1,5 @@
 /* This Terraform deployment creates the following resources:
-    EC2 with userdata script installing Jenkins */
+    Security Groups,  */
 
 # Obtain User's Local Public IP
 data "external" "useripaddr" {
@@ -22,15 +22,17 @@ resource "aws_security_group" "http_web_traffic" {
       from_port   = port.value
       to_port     = port.value
       protocol    = "TCP"
-      cidr_blocks = [ var.v_alltraffic_cidr ]
+      cidr_blocks = var.v_public_access_ssh == "yes" ? [ var.v_alltraffic_cidr ] : [ "${data.external.useripaddr.result.ip}/32" ]
     }
   }
+
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = [ var.v_alltraffic_cidr ]
   }
+
   tags = {
     Name        = "${var.v_environment}-jenkins-security-group"
     Environment = "${var.v_environment}"
@@ -43,13 +45,12 @@ resource "aws_security_group" "jenkins_security_group" {
   description = "SSH/8080 to Jenkins EC2 instance"
   vpc_id      = var.v_vpc_id
   
-
   ingress {
     description = "SSH/universal"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.v_alltraffic_cidr] #"${data.external.useripaddr.result.ip}/32"] - uncomment this line to allow only from creator host
+    cidr_blocks = var.v_public_access_ssh == "yes" ? [var.v_alltraffic_cidr] : ["${data.external.useripaddr.result.ip}/32"]
   }
 
   ingress {
@@ -57,7 +58,7 @@ resource "aws_security_group" "jenkins_security_group" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = [var.v_alltraffic_cidr] #"${data.external.useripaddr.result.ip}/32"] - uncomment this line to allow only from creator host
+    cidr_blocks = var.v_public_access_ssh == "yes" ? [var.v_alltraffic_cidr] : ["${data.external.useripaddr.result.ip}/32"]
   }
 
   egress {
@@ -101,7 +102,7 @@ resource "tls_private_key" "generated" {
 
 resource "local_file" "private_key_pem" {
   content         = tls_private_key.generated.private_key_pem
-  filename        = "${var.v_ssh_key}.pem"
+  filename        = "${var.v_ssh_path}${var.v_ssh_key}.pem"
   file_permission = "0400"
 }
 
@@ -109,10 +110,9 @@ resource "aws_key_pair" "generated" {
   key_name   = var.v_ssh_key
   public_key = tls_private_key.generated.public_key_openssh
   tags = {
-    Name = "${var.v_environment}-${var.v_ssh_key}"
+    Name        = "${var.v_environment}-${var.v_ssh_key}"
     Environment = "${var.v_environment}"
   }
-
 }
 
 # Create EC2 Instance
@@ -120,11 +120,10 @@ resource "aws_instance" "jenkins_server" {
   ami                         = data.aws_ami.amazon_linux_2.id
   instance_type               = var.v_instance_type
   key_name                    = aws_key_pair.generated.key_name
-#  subnet_id                   = var.v_public_subnet_id #aws_subnet.subnet.id
   subnet_id                   = var.v_public_subnet_id[0] #count.index]
-  security_groups             = [aws_security_group.jenkins_security_group.id ] #, aws_security_group.http_web_traffic.id ]
+  security_groups             = [aws_security_group.jenkins_security_group.id] #,  aws_security_group.http_web_traffic.id ]
   associate_public_ip_address = true
-  # iam_instance_profile        = "ec2_sns_publish_profile"
+  iam_instance_profile        = aws_iam_instance_profile.ec2_sns_publish_profile.arn # "ec2_sns_publish_profile"
   # user_data                   =  "${file("./ansible-install.sh")}"
   
   connection {

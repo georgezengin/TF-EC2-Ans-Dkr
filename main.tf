@@ -20,6 +20,8 @@ module "ec2" {
   v_avail_zones       = var.v_avail_zones
   v_vpc_id            = module.network.o_vpc_id
   v_public_subnet_id  = module.network.o_subnet_id
+  v_public_access_ssh = var.v_public_access_ssh
   v_ssh_key           = var.v_ssh_key
+  v_ssh_path          = var.v_ssh_path
   v_email_addr_sns    = var.v_email_addr_sns
 }
