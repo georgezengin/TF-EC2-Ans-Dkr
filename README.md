@@ -93,7 +93,7 @@ Ctrl-click at the link in the outputs will take you straight to it.
 
   (includes ssh connection string and Jenkins GUI URL)
 
-![Screenshot](images/list-of-outputs)
+![Screenshot](images/list-of-outputs.jpg)
 
 + Session opened using connection string.
   
@@ -104,7 +104,7 @@ Ctrl-click at the link in the outputs will take you straight to it.
 
 + Sample of Mail Notification on Instance Start/Stop
 
-![Screenshot](images/mail-notification)
+![Screenshot](images/mail-notification.jpg)
 
 Enjoy!
 George
