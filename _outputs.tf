@@ -9,6 +9,7 @@ output "o_vpc_id" {
 # Subnet ID - generated on deployment
 output "o_subnet_id" {
   description = "Public Subnet ID"
+  type = list(array)
   value = module.network.o_subnet_id
 }
 

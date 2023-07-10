@@ -146,7 +146,7 @@ resource "aws_instance" "jenkins_server" {
   # }
 
   provisioner "file" {
-    source      = "./instance-setup.sh"  # Path to your bash script file
+    source      = "./_scripts-keys/instance-setup.sh"  # Path to your bash script file
     destination = "/home/ec2-user/instance-setup.sh"
     
     connection {
@@ -159,7 +159,7 @@ resource "aws_instance" "jenkins_server" {
   }
 
   provisioner "file" {
-    source      = "./install-jenkins.yml"    # yaml file for ansible
+    source      = "./_scripts-keys/install-jenkins.yml"    # yaml file for ansible
     destination = "/home/ec2-user/install-jenkins.yml" 
     
     connection {

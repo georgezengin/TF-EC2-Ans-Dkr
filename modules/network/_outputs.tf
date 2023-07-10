@@ -6,8 +6,8 @@ output "o_vpc_id" {
 }
 
 output "o_subnet_id" {
-  #count = 1
   description = "subnet ID"
+  type = list(array)
   value = "${aws_subnet.subnet.*.id}"
 }
 

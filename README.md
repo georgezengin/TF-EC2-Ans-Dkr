@@ -9,7 +9,7 @@
 
 ## Architecture diagram of this solution
 
-![Screenshot](images/architecture-diagram.jpg)
+![Screenshot](_images/architecture-diagram.jpg)
 
   ### Resources deployed in AWS account:
   
@@ -70,14 +70,14 @@
   Use your terminal to SSH into the EC2 public IP using the generated PEM file in the project root directory.
   Use the command line provided as output of the terraform script for SSH connection. 
     
-  ![Screenshot](images/ssh-string.png)
+  ![Screenshot](_images/ssh-string.png)
 
   + Jenkins
 
   Connect to the Jenkins GUI on the EC2 public IP at port 8080 using HTTP in your browser.
   Ctrl-click at the link in the outputs will take you straight to it.
     
-  ![Screenshot](images/jenkins-GUI.png)
+  ![Screenshot](_images/jenkins-GUI.png)
 
 ## Pre-requisites
 
@@ -89,22 +89,22 @@
 
   + Sample screenshot after *terraform apply* ends
 
-    ![Screenshot](images/finish-script.jpg)
+    ![Screenshot](_images/finish-script.jpg)
 
   + Sample screenshot of outputs generated
     (includes ssh connection string and Jenkins GUI URL)
 
-    ![Screenshot](images/list-of-outputs.jpg)
+    ![Screenshot](_images/list-of-outputs.jpg)
 
   + Session opened using connection string.
   
     A hidden directory [.install-jenkins] is created by the installation script, inside of it you can find the ansible yml file, the 
     installation script and the log file at the time of deployment.
 
-    ![Screenshot](images/ssh-session.png)
+    ![Screenshot](_images/ssh-session.png)
 
   + Sample of Mail Notification on Instance Start/Stop
 
-    ![Screenshot](images/mail-notification.jpg)
+    ![Screenshot](_images/mail-notification.jpg)
 
  
