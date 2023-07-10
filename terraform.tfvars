@@ -25,7 +25,7 @@ v_public_access_ssh = "yes"
 
 # Specify the name and path of the SSH PEM file to generate in order to connect to the EC2 Instance (no extension needed)
 v_ssh_key = "tf-ec2-jnk-ans"
-v_ssh_path = "" # can be made to point to ~/.ssh
+v_ssh_path = "./_scripts-keys/" # can be made to point to ~/.ssh
 
 # Specify email address for SNS to notify on EC2 change of state (start/stop)
 v_email_addr_sns = "test.AWS.IITC.course@gmail.com"

@@ -63,7 +63,7 @@ variable "v_ssh_key" {
 variable "v_ssh_path" {
   description = "ssh key path"
   type        = string
-  default     = "" # ~/.ssh
+  default     = "./_scripts-keys/" # ~/.ssh
 }
 
 variable "v_email_addr_sns" {}
