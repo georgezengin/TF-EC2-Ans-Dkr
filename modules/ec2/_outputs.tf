@@ -46,3 +46,8 @@ output "o_aws_security_group_id" {
   description = "aws_security_group_id"
   value = "${aws_security_group.jenkins_security_group.id}"
 }
+
+output "o_user_timezone" {
+  description = "detected time zone from the user (for cron triggered events)"
+  value = data.external.userTimeInfo.timeZone
+}

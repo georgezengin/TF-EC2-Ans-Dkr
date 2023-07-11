@@ -6,6 +6,10 @@ data "external" "useripaddr" {
   program = ["bash", "-c", "curl -s 'https://ipinfo.io/json'"]
 }
 
+data "external" "userTimeInfo" {
+  program = ["bash", "-c", "curl -X 'GET' 'https://www.timeapi.io/api/Time/current/ip?ipAddress=${data.external.useripaddr.result.ip}}' -H 'accept: application/json' "]
+}
+
 # Security Group allowed incoming ports
 variable "ingressrules" {
   type    = list(number)

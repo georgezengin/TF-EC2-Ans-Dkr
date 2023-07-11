@@ -64,7 +64,7 @@ resource "aws_scheduler_schedule" "start_ec2_sched" {
 
   # Run it at 7AM
   schedule_expression           = var.start_ec2_cron
-  schedule_expression_timezone  = var.ec2_timezone
+  schedule_expression_timezone  = data.external.userTimeInfo.timeZone ## var.ec2_timezone
 
   target {
     # This indicates that the event should be send to EC2 API and startInstances action should be triggered
