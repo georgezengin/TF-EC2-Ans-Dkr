@@ -7,7 +7,6 @@ module "network" {
   source = "./modules/network"
   # pass project variables from terraform.tfvars
   v_environment       = var.v_environment
-  v_instance_type     = var.v_instance_type
   v_aws_region        = var.v_aws_region
   v_avail_zones       = var.v_avail_zones
 }

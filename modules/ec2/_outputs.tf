@@ -44,10 +44,16 @@ output "o_instance_private_dns" {
 
 output "o_aws_security_group_id" {
   description = "aws_security_group_id"
-  value = "${aws_security_group.jenkins_security_group.id}"
+  value = aws_security_group.jenkins_security_group.id
+}
+
+
+output "o_user_local_public_IP" {
+  description = "User's local public IP"
+  value       = data.external.useripaddr.result.ip
 }
 
 output "o_user_timezone" {
   description = "detected time zone from the user (for cron triggered events)"
-  value = data.external.userTimeInfo.timeZone
+  value       = data.external.user_timezone.result["timeZone"] #var.ec2_timezone
 }

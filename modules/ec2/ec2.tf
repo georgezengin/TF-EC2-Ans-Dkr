@@ -6,8 +6,17 @@ data "external" "useripaddr" {
   program = ["bash", "-c", "curl -s 'https://ipinfo.io/json'"]
 }
 
-data "external" "userTimeInfo" {
-  program = ["bash", "-c", "curl -X 'GET' 'https://www.timeapi.io/api/Time/current/ip?ipAddress=${data.external.useripaddr.result.ip}}' -H 'accept: application/json' "]
+data "external" "user_timezone" {
+  program = [
+    "bash",
+    "-c",
+    <<-EOF
+      url="https://www.timeapi.io/api/TimeZone/ip?ipAddress="${data.external.useripaddr.result.ip}
+      response=$(curl -s "$url")
+      timeZone=$(echo "$response" | jq -r '.timeZone')
+      echo "{\"timeZone\": \"$timeZone\"}"
+    EOF
+  ]
 }
 
 # Security Group allowed incoming ports

@@ -9,14 +9,18 @@ output "o_vpc_id" {
 # Subnet ID - generated on deployment
 output "o_subnet_id" {
   description = "Public Subnet ID"
-  type = list(array)
   value = module.network.o_subnet_id
 }
 
 # local User IP - Used to limit SSH access to user (if required by project parameter)
 output "o_user_local_public_IP" {
   description = "User's local public IP"
-  value       = module.network.o_user_local_public_IP
+  value       = module.ec2.o_user_local_public_IP
+}
+
+output "o_user_timezone" {
+  description = "detected time zone from the user (for cron triggered events)"
+  value       = module.ec2.o_user_timezone
 }
 
 # left for future use - result of API call
@@ -73,4 +77,3 @@ output "o_jenkins_GUI_access" {
   description = "Jenkins GUI Remote Access"
   value       = module.ec2.o_jenkins_GUI_access
 }
-
